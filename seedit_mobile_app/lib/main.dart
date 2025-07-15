@@ -16,6 +16,7 @@ import 'features/security/screens/security_settings_screen.dart';
 import 'features/onboarding/screens/onboarding_screen.dart';
 import 'features/funds/screens/fund_discovery_screen.dart';
 import 'features/investment/screens/investment_order_screen.dart';
+import 'features/portfolio/screens/portfolio_dashboard_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -122,6 +123,12 @@ final _router = GoRouter(
         return InvestmentOrderScreen(fundId: fundId);
       },
     ),
+
+    // Portfolio routes
+    GoRoute(
+      path: '/portfolio',
+      builder: (context, state) => const PortfolioDashboardScreen(),
+    ),
   ],
 );
 
@@ -170,18 +177,37 @@ class HomeScreen extends StatelessWidget {
               style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
             const SizedBox(height: 32),
-            ElevatedButton.icon(
-              onPressed: () {
-                context.push('/funds');
-              },
-              icon: const Icon(Icons.explore),
-              label: const Text('Discover Funds'),
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 12,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton.icon(
+                  onPressed: () {
+                    context.push('/portfolio');
+                  },
+                  icon: const Icon(Icons.pie_chart),
+                  label: const Text('My Portfolio'),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 12,
+                    ),
+                  ),
                 ),
-              ),
+                const SizedBox(width: 16),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    context.push('/funds');
+                  },
+                  icon: const Icon(Icons.explore),
+                  label: const Text('Discover Funds'),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 12,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
