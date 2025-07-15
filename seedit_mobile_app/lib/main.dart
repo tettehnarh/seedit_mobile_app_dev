@@ -17,6 +17,7 @@ import 'features/onboarding/screens/onboarding_screen.dart';
 import 'features/funds/screens/fund_discovery_screen.dart';
 import 'features/investment/screens/investment_order_screen.dart';
 import 'features/portfolio/screens/portfolio_dashboard_screen.dart';
+import 'features/group_investment/screens/group_discovery_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -129,6 +130,12 @@ final _router = GoRouter(
       path: '/portfolio',
       builder: (context, state) => const PortfolioDashboardScreen(),
     ),
+
+    // Group investment routes
+    GoRoute(
+      path: '/groups',
+      builder: (context, state) => const GroupDiscoveryScreen(),
+    ),
   ],
 );
 
@@ -177,32 +184,50 @@ class HomeScreen extends StatelessWidget {
               style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
             const SizedBox(height: 32),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            Column(
               children: [
-                ElevatedButton.icon(
-                  onPressed: () {
-                    context.push('/portfolio');
-                  },
-                  icon: const Icon(Icons.pie_chart),
-                  label: const Text('My Portfolio'),
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 12,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        context.push('/portfolio');
+                      },
+                      icon: const Icon(Icons.pie_chart),
+                      label: const Text('My Portfolio'),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 12,
+                        ),
+                      ),
                     ),
-                  ),
+                    const SizedBox(width: 16),
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        context.push('/funds');
+                      },
+                      icon: const Icon(Icons.explore),
+                      label: const Text('Discover Funds'),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 12,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(height: 16),
                 ElevatedButton.icon(
                   onPressed: () {
-                    context.push('/funds');
+                    context.push('/groups');
                   },
-                  icon: const Icon(Icons.explore),
-                  label: const Text('Discover Funds'),
+                  icon: const Icon(Icons.group),
+                  label: const Text('Investment Groups'),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
+                      horizontal: 24,
                       vertical: 12,
                     ),
                   ),
