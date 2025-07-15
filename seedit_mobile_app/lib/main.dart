@@ -19,6 +19,7 @@ import 'features/investment/screens/investment_order_screen.dart';
 import 'features/portfolio/screens/portfolio_dashboard_screen.dart';
 import 'features/group_investment/screens/group_discovery_screen.dart';
 import 'features/sip/screens/sip_dashboard_screen.dart';
+import 'features/goals/screens/goals_dashboard_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -143,6 +144,12 @@ final _router = GoRouter(
       path: '/sip',
       builder: (context, state) => const SIPDashboardScreen(),
     ),
+
+    // Goals routes
+    GoRoute(
+      path: '/goals',
+      builder: (context, state) => const GoalsDashboardScreen(),
+    ),
   ],
 );
 
@@ -257,6 +264,20 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                   ],
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    context.push('/goals');
+                  },
+                  icon: const Icon(Icons.flag),
+                  label: const Text('Financial Goals'),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
+                    ),
+                  ),
                 ),
               ],
             ),
