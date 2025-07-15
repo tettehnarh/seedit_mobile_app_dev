@@ -1,0 +1,186 @@
+name: SeedIt CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+env:
+  NODE_VERSION: '18'
+  FLUTTER_VERSION: '3.32.4'
+
+jobs:
+  # Web Application CI/CD
+  web-app:
+    name: Web Application
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./seedit_web_app
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: './seedit_web_app/package-lock.json'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run linting
+      run: npm run lint
+
+    - name: Run type checking
+      run: npm run type-check
+
+    - name: Build application
+      run: npm run build
+      env:
+        NEXT_PUBLIC_AWS_REGION: ${{ secrets.AWS_REGION }}
+        NEXT_PUBLIC_USER_POOL_ID: ${{ secrets.USER_POOL_ID }}
+        NEXT_PUBLIC_USER_POOL_CLIENT_ID: ${{ secrets.USER_POOL_CLIENT_ID }}
+        NEXT_PUBLIC_IDENTITY_POOL_ID: ${{ secrets.IDENTITY_POOL_ID }}
+        NEXT_PUBLIC_GRAPHQL_ENDPOINT: ${{ secrets.GRAPHQL_ENDPOINT }}
+        NEXT_PUBLIC_STORAGE_BUCKET: ${{ secrets.STORAGE_BUCKET }}
+
+    - name: Deploy to Staging (develop branch)
+      if: github.ref == 'refs/heads/develop'
+      run: |
+        echo "Deploying to staging environment..."
+        # Add your staging deployment commands here
+        # Example: aws s3 sync out/ s3://staging-bucket --delete
+
+    - name: Deploy to Production (main branch)
+      if: github.ref == 'refs/heads/main'
+      run: |
+        echo "Deploying to production environment..."
+        # Add your production deployment commands here
+        # Example: aws s3 sync out/ s3://production-bucket --delete
+
+  # Mobile Application CI/CD
+  mobile-app:
+    name: Mobile Application
+    runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: ./seedit_mobile_app
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: ${{ env.FLUTTER_VERSION }}
+        channel: 'stable'
+
+    - name: Get Flutter dependencies
+      run: flutter pub get
+
+    - name: Run Flutter analyzer
+      run: flutter analyze
+
+    - name: Run Flutter tests
+      run: flutter test
+
+    - name: Build Android APK (develop branch)
+      if: github.ref == 'refs/heads/develop'
+      run: flutter build apk --debug
+
+    - name: Build iOS (develop branch)
+      if: github.ref == 'refs/heads/develop'
+      run: flutter build ios --debug --no-codesign
+
+    - name: Build Android AAB (main branch)
+      if: github.ref == 'refs/heads/main'
+      run: flutter build appbundle --release
+
+    - name: Build iOS (main branch)
+      if: github.ref == 'refs/heads/main'
+      run: flutter build ios --release --no-codesign
+
+    - name: Upload Android artifacts
+      if: github.ref == 'refs/heads/main'
+      uses: actions/upload-artifact@v4
+      with:
+        name: android-release
+        path: seedit_mobile_app/build/app/outputs/bundle/release/
+
+    - name: Upload iOS artifacts
+      if: github.ref == 'refs/heads/main'
+      uses: actions/upload-artifact@v4
+      with:
+        name: ios-release
+        path: seedit_mobile_app/build/ios/iphoneos/
+
+  # AWS Amplify Backend Deployment
+  amplify-backend:
+    name: Amplify Backend
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    - name: Install Amplify CLI
+      run: npm install -g @aws-amplify/cli
+
+    - name: Deploy to Staging (develop branch)
+      if: github.ref == 'refs/heads/develop'
+      working-directory: ./seedit_mobile_app
+      run: |
+        amplify env checkout staging --yes
+        amplify push --yes
+
+    - name: Deploy to Production (main branch)
+      if: github.ref == 'refs/heads/main'
+      working-directory: ./seedit_mobile_app
+      run: |
+        amplify env checkout production --yes
+        amplify push --yes
+
+  # Security and Quality Checks
+  security-checks:
+    name: Security & Quality
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Run security audit (Web)
+      working-directory: ./seedit_web_app
+      run: npm audit --audit-level moderate
+
+    - name: Run dependency check
+      uses: dependency-check/Dependency-Check_Action@main
+      with:
+        project: 'SeedIt'
+        path: '.'
+        format: 'HTML'
+
+    - name: Upload security report
+      uses: actions/upload-artifact@v4
+      with:
+        name: security-report
+        path: reports/
