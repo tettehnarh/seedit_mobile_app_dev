@@ -18,6 +18,7 @@ import 'features/funds/screens/fund_discovery_screen.dart';
 import 'features/investment/screens/investment_order_screen.dart';
 import 'features/portfolio/screens/portfolio_dashboard_screen.dart';
 import 'features/group_investment/screens/group_discovery_screen.dart';
+import 'features/sip/screens/sip_dashboard_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -136,6 +137,12 @@ final _router = GoRouter(
       path: '/groups',
       builder: (context, state) => const GroupDiscoveryScreen(),
     ),
+
+    // SIP routes
+    GoRoute(
+      path: '/sip',
+      builder: (context, state) => const SIPDashboardScreen(),
+    ),
   ],
 );
 
@@ -219,18 +226,37 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 16),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    context.push('/groups');
-                  },
-                  icon: const Icon(Icons.group),
-                  label: const Text('Investment Groups'),
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 12,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        context.push('/groups');
+                      },
+                      icon: const Icon(Icons.group),
+                      label: const Text('Groups'),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 12,
+                        ),
+                      ),
                     ),
-                  ),
+                    const SizedBox(width: 16),
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        context.push('/sip');
+                      },
+                      icon: const Icon(Icons.schedule),
+                      label: const Text('SIP & Auto'),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 12,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
