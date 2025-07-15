@@ -198,3 +198,6 @@ test-results/
 *.backup
 *.bak
 *.orig
+
+
+templates
