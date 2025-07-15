@@ -11,6 +11,7 @@ import 'features/auth/screens/forgot_password_screen.dart';
 import 'features/auth/screens/reset_password_confirm_screen.dart';
 import 'features/profile/screens/profile_screen.dart';
 import 'features/profile/screens/edit_profile_screen.dart';
+import 'features/kyc/screens/kyc_verification_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -83,6 +84,12 @@ final _router = GoRouter(
     GoRoute(
       path: '/profile/edit',
       builder: (context, state) => const EditProfileScreen(),
+    ),
+
+    // KYC routes
+    GoRoute(
+      path: '/kyc',
+      builder: (context, state) => const KycVerificationScreen(),
     ),
   ],
 );
