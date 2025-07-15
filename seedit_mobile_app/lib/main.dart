@@ -13,6 +13,7 @@ import 'features/profile/screens/profile_screen.dart';
 import 'features/profile/screens/edit_profile_screen.dart';
 import 'features/kyc/screens/kyc_verification_screen.dart';
 import 'features/security/screens/security_settings_screen.dart';
+import 'features/onboarding/screens/onboarding_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -97,6 +98,12 @@ final _router = GoRouter(
     GoRoute(
       path: '/security',
       builder: (context, state) => const SecuritySettingsScreen(),
+    ),
+
+    // Onboarding routes
+    GoRoute(
+      path: '/onboarding',
+      builder: (context, state) => const OnboardingScreen(),
     ),
   ],
 );
