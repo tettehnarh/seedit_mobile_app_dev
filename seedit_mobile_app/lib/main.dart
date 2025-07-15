@@ -14,6 +14,7 @@ import 'features/profile/screens/edit_profile_screen.dart';
 import 'features/kyc/screens/kyc_verification_screen.dart';
 import 'features/security/screens/security_settings_screen.dart';
 import 'features/onboarding/screens/onboarding_screen.dart';
+import 'features/funds/screens/fund_discovery_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -105,6 +106,12 @@ final _router = GoRouter(
       path: '/onboarding',
       builder: (context, state) => const OnboardingScreen(),
     ),
+
+    // Fund routes
+    GoRoute(
+      path: '/funds',
+      builder: (context, state) => const FundDiscoveryScreen(),
+    ),
   ],
 );
 
@@ -133,20 +140,38 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: const Center(
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.account_balance_wallet, size: 80, color: Colors.green),
-            SizedBox(height: 24),
-            Text(
+            const Icon(
+              Icons.account_balance_wallet,
+              size: 80,
+              color: Colors.green,
+            ),
+            const SizedBox(height: 24),
+            const Text(
               'Welcome to SeedIt!',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 16),
-            Text(
+            const SizedBox(height: 16),
+            const Text(
               'Your investment journey starts here.',
               style: TextStyle(fontSize: 16, color: Colors.grey),
+            ),
+            const SizedBox(height: 32),
+            ElevatedButton.icon(
+              onPressed: () {
+                context.push('/funds');
+              },
+              icon: const Icon(Icons.explore),
+              label: const Text('Discover Funds'),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 12,
+                ),
+              ),
             ),
           ],
         ),
