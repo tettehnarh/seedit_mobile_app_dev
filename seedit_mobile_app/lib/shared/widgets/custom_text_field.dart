@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+// Export the dropdown field for convenience
+export 'custom_dropdown_field.dart';
+
 class CustomTextField extends StatelessWidget {
   final TextEditingController? controller;
   final String label;
@@ -48,7 +51,7 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -74,13 +77,11 @@ class CustomTextField extends StatelessWidget {
           maxLength: maxLength,
           focusNode: focusNode,
           textCapitalization: textCapitalization,
-          style: TextStyle(
-            color: enabled ? null : Colors.grey,
-          ),
+          style: TextStyle(color: enabled ? null : Colors.grey),
           decoration: InputDecoration(
             hintText: hintText ?? label,
             helperText: helperText,
-            prefixIcon: prefixIcon != null 
+            prefixIcon: prefixIcon != null
                 ? Icon(
                     prefixIcon,
                     color: enabled ? Colors.grey[600] : Colors.grey[400],
@@ -88,52 +89,33 @@ class CustomTextField extends StatelessWidget {
                 : null,
             suffixIcon: suffixIcon,
             filled: true,
-            fillColor: enabled 
-                ? theme.colorScheme.surface 
-                : Colors.grey[100],
+            fillColor: enabled ? theme.colorScheme.surface : Colors.grey[100],
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: Colors.grey[300]!,
-                width: 1,
-              ),
+              borderSide: BorderSide(color: Colors.grey[300]!, width: 1),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: Colors.grey[300]!,
-                width: 1,
-              ),
+              borderSide: BorderSide(color: Colors.grey[300]!, width: 1),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: theme.primaryColor,
-                width: 2,
-              ),
+              borderSide: BorderSide(color: theme.primaryColor, width: 2),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(
-                color: Colors.red,
-                width: 1,
-              ),
+              borderSide: const BorderSide(color: Colors.red, width: 1),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(
-                color: Colors.red,
-                width: 2,
-              ),
+              borderSide: const BorderSide(color: Colors.red, width: 2),
             ),
             disabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: Colors.grey[300]!,
-                width: 1,
-              ),
+              borderSide: BorderSide(color: Colors.grey[300]!, width: 1),
             ),
-            contentPadding: contentPadding ?? 
+            contentPadding:
+                contentPadding ??
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             counterText: maxLength != null ? null : '',
           ),
@@ -162,24 +144,23 @@ class CustomSearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return TextField(
       controller: controller,
       onChanged: onChanged,
       enabled: enabled,
       decoration: InputDecoration(
         hintText: hintText,
-        prefixIcon: Icon(
-          Icons.search,
-          color: Colors.grey[600],
-        ),
+        prefixIcon: Icon(Icons.search, color: Colors.grey[600]),
         suffixIcon: controller?.text.isNotEmpty == true
             ? IconButton(
                 icon: const Icon(Icons.clear),
-                onPressed: onClear ?? () {
-                  controller?.clear();
-                  onChanged?.call('');
-                },
+                onPressed:
+                    onClear ??
+                    () {
+                      controller?.clear();
+                      onChanged?.call('');
+                    },
               )
             : null,
         filled: true,
@@ -194,12 +175,12 @@ class CustomSearchField extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
-            color: theme.primaryColor,
-            width: 2,
-          ),
+          borderSide: BorderSide(color: theme.primaryColor, width: 2),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 12,
+        ),
       ),
     );
   }
@@ -228,7 +209,7 @@ class CustomDropdownField<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -248,38 +229,27 @@ class CustomDropdownField<T> extends StatelessWidget {
           decoration: InputDecoration(
             hintText: hintText ?? 'Select $label',
             filled: true,
-            fillColor: enabled 
-                ? theme.colorScheme.surface 
-                : Colors.grey[100],
+            fillColor: enabled ? theme.colorScheme.surface : Colors.grey[100],
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: Colors.grey[300]!,
-                width: 1,
-              ),
+              borderSide: BorderSide(color: Colors.grey[300]!, width: 1),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: Colors.grey[300]!,
-                width: 1,
-              ),
+              borderSide: BorderSide(color: Colors.grey[300]!, width: 1),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: theme.primaryColor,
-                width: 2,
-              ),
+              borderSide: BorderSide(color: theme.primaryColor, width: 2),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(
-                color: Colors.red,
-                width: 1,
-              ),
+              borderSide: const BorderSide(color: Colors.red, width: 1),
             ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 16,
+            ),
           ),
         ),
       ],

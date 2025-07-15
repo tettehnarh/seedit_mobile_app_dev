@@ -9,6 +9,8 @@ import 'features/auth/screens/sign_up_screen.dart';
 import 'features/auth/screens/email_verification_screen.dart';
 import 'features/auth/screens/forgot_password_screen.dart';
 import 'features/auth/screens/reset_password_confirm_screen.dart';
+import 'features/profile/screens/profile_screen.dart';
+import 'features/profile/screens/edit_profile_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -70,8 +72,18 @@ final _router = GoRouter(
       },
     ),
 
-    // Main app routes (placeholder)
+    // Main app routes
     GoRoute(path: '/home', builder: (context, state) => const HomeScreen()),
+
+    // Profile routes
+    GoRoute(
+      path: '/profile',
+      builder: (context, state) => const ProfileScreen(),
+    ),
+    GoRoute(
+      path: '/profile/edit',
+      builder: (context, state) => const EditProfileScreen(),
+    ),
   ],
 );
 
@@ -85,6 +97,12 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('SeedIt Home'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.person),
+            onPressed: () {
+              context.push('/profile');
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () {
