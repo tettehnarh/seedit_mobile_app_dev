@@ -52,7 +52,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           Navigator.pop(context);
           await _deleteProfilePicture();
         },
-        hasProfilePicture: ref.read(currentUserProfileProvider)?.profilePictureUrl != null,
+        hasProfilePicture:
+            ref.read(currentUserProfileProvider)?.profilePictureUrl != null,
       ),
     );
   }
@@ -61,7 +62,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     final currentUser = ref.read(currentUserProvider);
     if (currentUser != null) {
       try {
-        await ref.read(profileStateProvider.notifier)
+        await ref
+            .read(profileStateProvider.notifier)
             .uploadProfilePictureFromGallery(currentUser.id);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -74,10 +76,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(e.toString()),
-              backgroundColor: Colors.red,
-            ),
+            SnackBar(content: Text(e.toString()), backgroundColor: Colors.red),
           );
         }
       }
@@ -88,7 +87,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     final currentUser = ref.read(currentUserProvider);
     if (currentUser != null) {
       try {
-        await ref.read(profileStateProvider.notifier)
+        await ref
+            .read(profileStateProvider.notifier)
             .uploadProfilePictureFromCamera(currentUser.id);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -101,10 +101,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(e.toString()),
-              backgroundColor: Colors.red,
-            ),
+            SnackBar(content: Text(e.toString()), backgroundColor: Colors.red),
           );
         }
       }
@@ -115,7 +112,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     final currentUser = ref.read(currentUserProvider);
     if (currentUser != null) {
       try {
-        await ref.read(profileStateProvider.notifier)
+        await ref
+            .read(profileStateProvider.notifier)
             .deleteProfilePicture(currentUser.id);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -128,10 +126,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(e.toString()),
-              backgroundColor: Colors.red,
-            ),
+            SnackBar(content: Text(e.toString()), backgroundColor: Colors.red),
           );
         }
       }
@@ -142,15 +137,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   Widget build(BuildContext context) {
     final profile = ref.watch(currentUserProfileProvider);
     final isLoading = ref.watch(profileLoadingProvider);
-    final isUploading = ref.watch(profileStateProvider.select((state) => state.isUploading));
+    final isUploading = ref.watch(
+      profileStateProvider.select((state) => state.isUploading),
+    );
     final completionPercentage = ref.watch(profileCompletionProvider);
 
     if (isLoading && profile == null) {
-      return const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     return Scaffold(
@@ -231,20 +224,22 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     const SizedBox(height: 16),
                     Text(
                       profile?.fullName ?? 'User Name',
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: Theme.of(context).textTheme.headlineSmall
+                          ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       profile?.email ?? '',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.grey[600],
-                      ),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
                     ),
                     const SizedBox(height: 8),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
                         color: _getKycStatusColor(profile?.kycStatus),
                         borderRadius: BorderRadius.circular(12),
@@ -261,9 +256,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   ],
                 ),
               ),
-              
+
               const SizedBox(height: 24),
-              
+
               // Profile completion card
               ProfileCompletionCard(
                 completionPercentage: completionPercentage,
@@ -271,26 +266,26 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   context.push('/profile/edit');
                 },
               ),
-              
+
               const SizedBox(height: 24),
-              
+
               // Profile information cards
               ProfileInfoCard(profile: profile),
-              
+
               const SizedBox(height: 24),
-              
+
               // Action cards
               ProfileActionCard(
                 icon: Icons.security,
                 title: 'Security Settings',
                 subtitle: 'Manage password and security',
                 onTap: () {
-                  context.push('/profile/security');
+                  context.push('/security');
                 },
               ),
-              
+
               const SizedBox(height: 16),
-              
+
               ProfileActionCard(
                 icon: Icons.verified_user,
                 title: 'KYC Verification',
@@ -299,9 +294,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   context.push('/kyc');
                 },
               ),
-              
+
               const SizedBox(height: 16),
-              
+
               ProfileActionCard(
                 icon: Icons.notifications,
                 title: 'Notifications',
@@ -310,9 +305,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   context.push('/profile/notifications');
                 },
               ),
-              
+
               const SizedBox(height: 32),
-              
+
               // Sign out button
               CustomButton(
                 text: 'Sign Out',
@@ -326,7 +321,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 textColor: Colors.red,
                 backgroundColor: Colors.red,
               ),
-              
+
               const SizedBox(height: 32),
             ],
           ),
@@ -380,9 +375,9 @@ class _ImagePickerBottomSheet extends StatelessWidget {
           const SizedBox(height: 24),
           Text(
             'Profile Picture',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 24),
           Row(
@@ -430,7 +425,7 @@ class _BottomSheetOption extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final effectiveColor = color ?? Theme.of(context).primaryColor;
-    
+
     return GestureDetector(
       onTap: onTap,
       child: Column(
@@ -442,11 +437,7 @@ class _BottomSheetOption extends StatelessWidget {
               color: effectiveColor.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              icon,
-              color: effectiveColor,
-              size: 28,
-            ),
+            child: Icon(icon, color: effectiveColor, size: 28),
           ),
           const SizedBox(height: 8),
           Text(

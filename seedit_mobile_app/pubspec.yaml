@@ -66,6 +66,10 @@ dependencies:
   logger: ^2.4.0
   json_annotation: ^4.9.0
 
+  # Security
+  local_auth: ^2.1.8
+  shared_preferences: ^2.2.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
