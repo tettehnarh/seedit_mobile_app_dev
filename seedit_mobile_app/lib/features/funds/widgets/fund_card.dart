@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../../shared/models/fund_model.dart';
 
 class FundCard extends StatelessWidget {
@@ -21,9 +22,7 @@ class FundCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
@@ -50,22 +49,19 @@ class FundCard extends StatelessWidget {
                   if (showRecommendedBadge) _buildRecommendedBadge(),
                 ],
               ),
-              
+
               const SizedBox(height: 8),
-              
+
               // Fund description
               Text(
                 fund.shortDescription,
-                style: TextStyle(
-                  color: Colors.grey[600],
-                  fontSize: 14,
-                ),
+                style: TextStyle(color: Colors.grey[600], fontSize: 14),
                 maxLines: isCompact ? 1 : 2,
                 overflow: TextOverflow.ellipsis,
               ),
-              
+
               const SizedBox(height: 12),
-              
+
               // Fund metrics
               Row(
                 children: [
@@ -80,7 +76,9 @@ class FundCard extends StatelessWidget {
                     child: _buildMetric(
                       '1Y Return',
                       '${fund.performance.oneYearReturn.toStringAsFixed(1)}%',
-                      fund.performance.oneYearReturn >= 0 ? Colors.green : Colors.red,
+                      fund.performance.oneYearReturn >= 0
+                          ? Colors.green
+                          : Colors.red,
                     ),
                   ),
                   Expanded(
@@ -92,10 +90,10 @@ class FundCard extends StatelessWidget {
                   ),
                 ],
               ),
-              
+
               if (!isCompact) ...[
                 const SizedBox(height: 12),
-                
+
                 // Risk level and category
                 Row(
                   children: [
@@ -111,25 +109,18 @@ class FundCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                
+
                 const SizedBox(height: 12),
-                
+
                 // Fund manager and assets
                 Row(
                   children: [
-                    Icon(
-                      Icons.person,
-                      size: 16,
-                      color: Colors.grey[600],
-                    ),
+                    Icon(Icons.person, size: 16, color: Colors.grey[600]),
                     const SizedBox(width: 4),
                     Expanded(
                       child: Text(
                         fund.fundManager,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey[600],
-                        ),
+                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -169,11 +160,7 @@ class FundCard extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            Icons.trending_up,
-            size: 12,
-            color: Colors.orange[700],
-          ),
+          Icon(Icons.trending_up, size: 12, color: Colors.orange[700]),
           const SizedBox(width: 4),
           Text(
             'Trending',
@@ -199,11 +186,7 @@ class FundCard extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            Icons.recommend,
-            size: 12,
-            color: Colors.blue[700],
-          ),
+          Icon(Icons.recommend, size: 12, color: Colors.blue[700]),
           const SizedBox(width: 4),
           Text(
             'For You',
@@ -222,13 +205,7 @@ class FundCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 12,
-            color: Colors.grey[600],
-          ),
-        ),
+        Text(label, style: TextStyle(fontSize: 12, color: Colors.grey[600])),
         const SizedBox(height: 2),
         Text(
           value,
@@ -287,11 +264,7 @@ class FundListTile extends StatelessWidget {
   final InvestmentFund fund;
   final VoidCallback? onTap;
 
-  const FundListTile({
-    super.key,
-    required this.fund,
-    this.onTap,
-  });
+  const FundListTile({super.key, required this.fund, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -310,9 +283,7 @@ class FundListTile extends StatelessWidget {
       ),
       title: Text(
         fund.name,
-        style: const TextStyle(
-          fontWeight: FontWeight.w600,
-        ),
+        style: const TextStyle(fontWeight: FontWeight.w600),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
@@ -321,18 +292,12 @@ class FundListTile extends StatelessWidget {
         children: [
           Text(
             fund.categoryText,
-            style: TextStyle(
-              color: Colors.grey[600],
-              fontSize: 12,
-            ),
+            style: TextStyle(color: Colors.grey[600], fontSize: 12),
           ),
           const SizedBox(height: 2),
           Text(
             'Min: ${_formatCurrency(fund.minimumInvestment)}',
-            style: TextStyle(
-              color: Colors.grey[600],
-              fontSize: 12,
-            ),
+            style: TextStyle(color: Colors.grey[600], fontSize: 12),
           ),
         ],
       ),
@@ -342,16 +307,15 @@ class FundListTile extends StatelessWidget {
         children: [
           Text(
             '₦${fund.currentNAV.toStringAsFixed(2)}',
-            style: const TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 14,
-            ),
+            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
           ),
           const SizedBox(height: 2),
           Text(
             '${fund.performance.oneYearReturn >= 0 ? '+' : ''}${fund.performance.oneYearReturn.toStringAsFixed(1)}%',
             style: TextStyle(
-              color: fund.performance.oneYearReturn >= 0 ? Colors.green : Colors.red,
+              color: fund.performance.oneYearReturn >= 0
+                  ? Colors.green
+                  : Colors.red,
               fontSize: 12,
               fontWeight: FontWeight.w500,
             ),
@@ -375,19 +339,13 @@ class FundSummaryCard extends StatelessWidget {
   final InvestmentFund fund;
   final VoidCallback? onTap;
 
-  const FundSummaryCard({
-    super.key,
-    required this.fund,
-    this.onTap,
-  });
+  const FundSummaryCard({super.key, required this.fund, this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 1,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(8),
@@ -413,9 +371,9 @@ class FundSummaryCard extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               const SizedBox(width: 12),
-              
+
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -432,15 +390,12 @@ class FundSummaryCard extends StatelessWidget {
                     const SizedBox(height: 2),
                     Text(
                       fund.categoryText,
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                        fontSize: 12,
-                      ),
+                      style: TextStyle(color: Colors.grey[600], fontSize: 12),
                     ),
                   ],
                 ),
               ),
-              
+
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -455,12 +410,34 @@ class FundSummaryCard extends StatelessWidget {
                   Text(
                     '${fund.performance.oneYearReturn >= 0 ? '+' : ''}${fund.performance.oneYearReturn.toStringAsFixed(1)}%',
                     style: TextStyle(
-                      color: fund.performance.oneYearReturn >= 0 ? Colors.green : Colors.red,
+                      color: fund.performance.oneYearReturn >= 0
+                          ? Colors.green
+                          : Colors.red,
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],
+              ),
+
+              const SizedBox(height: 12),
+
+              // Invest button
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    context.push('/investment/order/${fund.id}');
+                  },
+                  icon: const Icon(Icons.trending_up, size: 16),
+                  label: const Text('Invest Now'),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),

@@ -15,6 +15,7 @@ import 'features/kyc/screens/kyc_verification_screen.dart';
 import 'features/security/screens/security_settings_screen.dart';
 import 'features/onboarding/screens/onboarding_screen.dart';
 import 'features/funds/screens/fund_discovery_screen.dart';
+import 'features/investment/screens/investment_order_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -111,6 +112,15 @@ final _router = GoRouter(
     GoRoute(
       path: '/funds',
       builder: (context, state) => const FundDiscoveryScreen(),
+    ),
+
+    // Investment routes
+    GoRoute(
+      path: '/investment/order/:fundId',
+      builder: (context, state) {
+        final fundId = state.pathParameters['fundId']!;
+        return InvestmentOrderScreen(fundId: fundId);
+      },
     ),
   ],
 );
